@@ -29,7 +29,7 @@ logging:
     org.hibernate.SQL: info
     org.hibernate.type: trace  # 변수값 출력
     org.apache.tomcat: info
-    com.tpirates.apitest: trace
+    com.yrkim.apitest: trace
     org.springframework.transaction: trace  # 트랜젝션 로그 활성화
 
 
@@ -45,7 +45,7 @@ server:
     accesslog:
       enabled: true
       directory: logs/
-    basedir: /damb-server/logs/tomcat
+    basedir: /yrkim_server/logs/tomcat
     max-http-form-post-size: 50MB
   servlet:
     context-path: /
