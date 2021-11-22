@@ -1,17 +1,17 @@
 package com.yrkim.apitest.model.entity;
 
-import lombok.AccessLevel;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 
-@Data
 @Entity
-@Table(name = "OptionInfo")
-@ToString
+@Setter @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@ToString
+@Table(name = "OptionInfo")
 public class OptionInfo {
 
     @Id
@@ -30,5 +30,7 @@ public class OptionInfo {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "orderId")
+    @ToString.Exclude
+    @JsonIgnore
     private Order optionid;
 }
