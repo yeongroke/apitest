@@ -2,11 +2,9 @@ package com.yrkim.apitest.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.yrkim.apitest.model.bean.OrderDTO;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 
@@ -14,11 +12,12 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Data
-@ToString
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
+@Setter @Getter
+@DynamicUpdate
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@ToString
 @Table(name = "OrderApi")
 public class Order {
 
@@ -33,8 +32,9 @@ public class Order {
     @Column(name = "productDescription" , nullable = false)
     private String productDescription;
 
-    @OneToOne(mappedBy = "deliveryid")
+    @OneToOne(mappedBy = "deliveryid" , cascade = CascadeType.REMOVE)
     @JsonIgnore
+    @ToString.Exclude
     private Delivery delivery;
 
     @Column(name = "registerDate" , nullable = false)
@@ -42,9 +42,16 @@ public class Order {
     @DateTimeFormat(iso = ISO.DATE_TIME)
     private LocalDateTime registerDate;
 
-    @OneToMany(mappedBy = "optionid")
+    @OneToMany(mappedBy = "optionid" , cascade = CascadeType.REMOVE)
     @JsonIgnore
+    @ToString.Exclude
     private List<OptionInfo> options;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    @JsonIgnore
+    @ToString.Exclude
+    private User user_order_id;
 
     public Order(OrderDTO orderDTO) {
         this.productName = orderDTO.getProductName();
