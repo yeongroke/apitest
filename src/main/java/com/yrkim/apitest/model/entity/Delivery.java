@@ -1,25 +1,26 @@
 package com.yrkim.apitest.model.entity;
 
-import lombok.AccessLevel;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 
-@Data
 @Entity
-@Table(name = "Delivery")
-@ToString
+@Setter
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@ToString
+@Table(name = "Delivery")
 public class Delivery {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "deId" , updatable = false, nullable = false, columnDefinition = "INT(11)")
     private Long id;
 
-    @Column(name = "deliveryType" , nullable = false, length = 50)
-    private String deliveryType;
+    @Enumerated(EnumType.STRING)
+    private DeliveryStatus deliveryType;
 
     @Column(name = "deliveryClosing" , nullable = false, length = 50)
     private String deliveryClosing;
@@ -29,5 +30,7 @@ public class Delivery {
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "orderId")
+    @JsonIgnore
+    @ToString.Exclude
     private Order deliveryid;
 }
