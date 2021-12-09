@@ -1,8 +1,10 @@
 package com.yrkim.apitest.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.yrkim.apitest.model.bean.UserDTO;
 import com.yrkim.apitest.util.ValidationPattern;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -10,13 +12,14 @@ import javax.persistence.*;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
+
 @Entity
-@Setter @Getter
+@Getter
 @DynamicUpdate
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @ToString
-
+@Builder
 public class User {
 
     @Id
@@ -24,16 +27,18 @@ public class User {
     @Column(name = "user_id")
     private Long id;
 
-    @Column(name = "UserName")
+    @Column(name = "UserName" ,nullable = false)
     private String name;
 
-    @Column(name = "UserEmail")
+    @Column(name = "UserEmail" ,nullable = false)
     private String email;
 
     @Column(name = "UserPassword")
+    @ColumnDefault("test1234")
     private String password;
 
-    @Column(name = "UserEnabled")
+    @Column(name = "UserEnabled" , nullable = false)
+    @ColumnDefault("N")
     private Boolean enabled;
 
     @Column(name = "UserPhone")
@@ -67,12 +72,12 @@ public class User {
 
     @Transient
     public boolean isValid() {
-        return isValidId(this.email) && isValidPassword(this.password);
+        return isValidId(this.name) && isValidPassword(this.password);
     }
 
     @Transient
-    public static boolean isValidId(String userEmail) {
-        return ValidationPattern.EMAIL_Check.matcher(userEmail).matches();
+    public static boolean isValidId(String userName) {
+        return ValidationPattern.EMAIL_Check.matcher(userName).matches();
     }
 
     @Transient
