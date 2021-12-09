@@ -14,7 +14,7 @@ spring:
       path: /h2
   jpa:
     hibernate:
-      ddl-auto: none
+      ddl-auto: update
       jdbc:
         time_zone: Asia/Seoul
     show-sql: true
@@ -29,9 +29,12 @@ logging:
     org.hibernate.SQL: info
     org.hibernate.type: trace  # 변수값 출력
     org.apache.tomcat: info
-    com.yrkim.apitest: trace
+    com.yrkim.apitest: debug
     org.springframework.transaction: trace  # 트랜젝션 로그 활성화
 
+config:
+  downloadImage: http://rokidev.com:10082
+  uploadImage: http://rokidev.com:10082
 
 server:
   compression:
