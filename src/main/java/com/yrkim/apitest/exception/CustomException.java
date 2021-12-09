@@ -1,18 +1,18 @@
 package com.yrkim.apitest.exception;
 
-import com.yrkim.apitest.handler.ErrorCode;
+import com.yrkim.apitest.handler.ResponseCode;
 import java.io.Serializable;
 
 public class CustomException extends RuntimeException implements Serializable {
 
-    private ErrorCode errorCode;
+    private ResponseCode errorCode;
 
-    public CustomException(ErrorCode errorCode) {
+    public CustomException(ResponseCode errorCode) {
         super(errorCode.getMessage());
         this.errorCode = errorCode;
     }
 
-    public ErrorCode getErrorCode() {
+    public ResponseCode getErrorCode() {
         return errorCode;
     }
 }

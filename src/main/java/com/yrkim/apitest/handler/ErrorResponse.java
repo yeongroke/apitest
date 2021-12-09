@@ -51,7 +51,7 @@ public class ErrorResponse {
         return this;
     }
 
-    // BindingResult.getFieldErrors() 硫붿냼?쒕? ?듯빐 ?꾨떖諛쏆? fieldErrors
+    // BindingResult.getFieldErrors() fieldErrors
     public void setCustomFieldErrors(List<FieldError> fieldErrors) {
 
         customFieldErrors = new ArrayList<>();
