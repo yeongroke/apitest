@@ -1,19 +1,18 @@
 package com.yrkim.apitest.service.Impl;
 
 import com.yrkim.apitest.model.bean.OrderDTO;
+import com.yrkim.apitest.model.bean.UserDTO;
 import com.yrkim.apitest.model.entity.Order;
+import com.yrkim.apitest.model.response.ListResult;
+import com.yrkim.apitest.model.response.SingleResult;
 import com.yrkim.apitest.repository.DeliveryRepository;
 import com.yrkim.apitest.repository.OptionRepository;
 import com.yrkim.apitest.repository.OrderRepository;
 import com.yrkim.apitest.service.OrderService;
+import com.yrkim.apitest.service.ResponseService;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -23,20 +22,18 @@ public class OrderServcieImpl implements OrderService {
     private final OrderRepository orderRepository;
     private final OptionRepository optionRepository;
     private final DeliveryRepository deliveryRepository;
+    private final ResponseService responseService;
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
-    public void addOrder(OrderDTO orderDTO) {
-        Order order = new Order(orderDTO);
-        orderRepository.save(order);
+    public SingleResult<OrderDTO> addOrder(OrderDTO orderDTO) {
+        Order order = orderRepository.save(orderDTO.toOrder(orderDTO));
+
+        return responseService.getSingleResult(new OrderDTO(orderRepository.findById(order.getId()).get()));
     }
 
     @Override
-    public List<Order> findAllOrderList() {
-        return orderRepository.findAll().stream()
-                .map(val -> {
-                    if(val == null) return null;
-                    return val;
-                })
-                .collect(Collectors.toList());
+    public ListResult<OrderDTO> findAllOrderList() {
+        return null;
     }
 }
