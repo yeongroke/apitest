@@ -3,6 +3,7 @@ package com.yrkim.apitest.service.Impl;
 import com.yrkim.apitest.model.bean.UserDTO;
 import com.yrkim.apitest.model.entity.User;
 import com.yrkim.apitest.model.response.ListResult;
+import com.yrkim.apitest.model.response.ResponseResult;
 import com.yrkim.apitest.model.response.SingleResult;
 import com.yrkim.apitest.repository.UserRepository;
 import com.yrkim.apitest.service.ResponseService;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -28,6 +30,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final EntityConverter entityConverter;
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public SingleResult<UserDTO> saveUser(UserDTO userDTO) {
         log.info("save User : {}", String.format("%s",userDTO.toString()));
@@ -56,5 +59,18 @@ public class UserServiceImpl implements UserService {
         ).collect(Collectors.toList());
         Page<UserDTO> userDTOS = new PageImpl<>(userDTOListResult , pageable, users.getTotalElements());
         return responseService.getListResult(userDTOS);
+    }
+
+    @Override
+    public ResponseResult deleteByIdUser(Long id) {
+
+        Optional<User> user = userRepository.findById(id);
+        if(user.isEmpty()) {
+            return responseService.getFailResult(500,"Not EXIST");
+        }
+
+        userRepository.deleteById(id);
+
+        return responseService.getSuccessResult();
     }
 }
