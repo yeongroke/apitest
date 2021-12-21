@@ -1,23 +1,19 @@
 package com.yrkim.apitest.model.bean;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.yrkim.apitest.model.entity.Address;
 import com.yrkim.apitest.model.entity.User;
 import lombok.*;
 
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 @Getter @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
+@Builder
 @ToString
 public class UserDTO {
     private Long id;
-
-    @NotNull
     private String name;
-    @NotNull
     private String email;
     private String phone;
     private String city;
